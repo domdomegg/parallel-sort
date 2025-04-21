@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 const parallelSort = require('./dist/index.js').default;
 
 const main = async () => {
