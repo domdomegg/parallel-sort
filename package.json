@@ -1,12 +1,12 @@
 {
-  "name": "typescript-library-template",
+  "name": "parallel-sort",
   "version": "0.0.0",
-  "description": "Template for creating TypeScript libraries",
+  "description": "Node.js library for multi-threaded sorting of large number arrays",
   "license": "MIT",
   "author": "Adam Jones (domdomegg)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/domdomegg/typescript-library-template.git"
+    "url": "https://github.com/domdomegg/parallel-sort.git"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,8 +14,8 @@
     "dist"
   ],
   "scripts": {
-    "test": "vitest run",
-    "test:watch": "vitest --watch",
+    "test": "PARALLEL_SORT_TS_WORKER=true vitest run",
+    "test:watch": "PARALLEL_SORT_TS_WORKER=true vitest --watch",
     "lint": "eslint",
     "clean": "rm -rf dist",
     "build": "tsc --project tsconfig.build.json",
@@ -28,5 +28,8 @@
     "tsconfig-domdomegg": "^1.0.0",
     "typescript": "^5.7.3",
     "vitest": "^3.0.5"
+  },
+  "dependencies": {
+    "@types/node": "^22.14.1"
   }
 }

@@ -1,23 +1,26 @@
 import {test, expect} from 'vitest';
-import {multiply, sum} from './index';
+import parallelSort from './index.js';
 
-test('adds positive numbers', () => {
-	expect(sum(1, 3)).toBe(4);
-	expect(sum(10001, 1345)).toBe(11346);
+test('sorts numbers correctly, quicker than native single-threaded .sort()', {timeout: 60_000}, async () => {
+	const rand1 = makeRandomArray();
+	const rand2 = makeRandomArray();
+
+	const parallelSortStartTime = process.hrtime.bigint();
+	const sortedArray = await parallelSort(rand1);
+	const parallelSortEndTime = process.hrtime.bigint();
+	const parallelSortDuration = parallelSortEndTime - parallelSortStartTime;
+
+	const nativeSortStartTime = process.hrtime.bigint();
+	rand2.sort((a, b) => a - b);
+	const nativeSortEndTime = process.hrtime.bigint();
+	const nativeSortDuration = nativeSortEndTime - nativeSortStartTime;
+
+	const isSorted = sortedArray.every((value, index) => index === 0 || value >= sortedArray[index - 1]!);
+	expect(isSorted).toBe(true);
+
+	expect(parallelSortDuration).toBeLessThan(nativeSortDuration);
 });
 
-test('adds negative numbers', () => {
-	expect(sum(-1, -3)).toBe(-4);
-	expect(sum(-10001, -1345)).toBe(-11346);
-});
-
-test('adds a negative and positive number', () => {
-	expect(sum(1, -3)).toBe(-2);
-	expect(sum(-10001, 1345)).toBe(-8656);
-});
-
-test('multiplies positive numbers', () => {
-	expect(multiply(1, 3)).toBe(3);
-	expect(multiply(2, 3)).toBe(6);
-	expect(multiply(10001, 1345)).toBe(13451345);
-});
+const makeRandomArray = () => {
+	return Float64Array.from({length: 10_000_000}, () => Math.random());
+};
