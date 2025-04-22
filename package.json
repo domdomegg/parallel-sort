@@ -14,8 +14,8 @@
     "dist"
   ],
   "scripts": {
-    "test": "PARALLEL_SORT_TS_WORKER=true vitest run",
-    "test:watch": "PARALLEL_SORT_TS_WORKER=true vitest --watch",
+    "test": "npm run build && IN_PARALLEL_SORT_TESTS=true vitest run",
+    "test:watch": "npm run build && IN_PARALLEL_SORT_TESTS=true vitest --watch",
     "lint": "eslint",
     "clean": "rm -rf dist",
     "build": "tsc --project tsconfig.build.json",
@@ -26,6 +26,7 @@
     "eslint": "^9.19.0",
     "eslint-config-domdomegg": "^2.0.8",
     "tsconfig-domdomegg": "^1.0.0",
+    "tsx": "^4.19.3",
     "typescript": "^5.7.3",
     "vitest": "^3.0.5"
   },

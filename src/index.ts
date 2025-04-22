@@ -43,13 +43,16 @@ const parallelSort = async (array: SortableArray) => {
 	const chunkLength = Math.ceil(array.length / THREADS);
 	const chunks = Array.from({length: THREADS}, (_, i) => array.slice(i * chunkLength, (i + 1) * chunkLength));
 
-	const workerPath = process.env.PARALLEL_SORT_TS_WORKER === 'true' ? `${__dirname}/worker.ts` : `${__dirname}/worker.js`;
+	const workerPath = process.env.IN_PARALLEL_SORT_TESTS === 'true' ? `${__dirname}/../dist/worker.js` : `${__dirname}/worker.js`;
 	await Promise.all(chunks.map(async (chunk, index) => {
 		const worker = new Worker(workerPath, {workerData: chunk});
 		worker.on('message', (sortedChunk: SortableArray) => {
 			chunks[index] = sortedChunk;
 		});
-		return new Promise<void>((resolve) => {
+		return new Promise<void>((resolve, reject) => {
+			worker.on('error', (error) => {
+				reject(error);
+			});
 			worker.on('exit', () => {
 				resolve();
 			});
