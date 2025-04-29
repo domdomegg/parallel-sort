@@ -1,6 +1,6 @@
 {
   "name": "parallel-sort",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Node.js library for multi-threaded sorting of large number arrays",
   "license": "MIT",
   "author": "Adam Jones (domdomegg)",
